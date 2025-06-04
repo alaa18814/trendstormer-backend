@@ -1,0 +1,30 @@
+name: Build Flutter APK
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🔄 Checkout code
+      uses: actions/checkout@v2
+
+    - name: 🐦 Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.16.0'
+
+    - name: ⚙️ Install dependencies
+      run: flutter pub get
+
+    - name: 🛠️ Build release APK
+      run: flutter build apk --release
+
+    - name: 📦 Upload APK artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: trendstormer-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
